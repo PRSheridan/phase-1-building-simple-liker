@@ -6,21 +6,30 @@ const FULL_HEART = '♥'
 
 document.addEventListener("DOMContentLoaded", () => {
   let likeButtons = document.querySelectorAll(".like-glyph");
+
   likeButtons.forEach(function (likeButton) {
     likeButton.addEventListener('click', () => {
+  
       mimicServerCall()
       .then (() => {
-        likeButton.textContent = FULL_HEART;
-        likeButton.classList.add('.activated-heart');
+        if (likeButton.classList.contains('activated-heart')) {
+          likeButton.textContent = EMPTY_HEART;
+          likeButton.classList.remove('activated-heart');
+        } else {
+          likeButton.textContent = FULL_HEART
+          likeButton.classList.add('activated-heart')
+        }
       })
-      .catch ((error) => {
-        document.querySelector(".modal").classList.remove('.hidden');
-      })
+
+      .catch (() => {
+        let errorMessage = document.getElementById("modal")
+        errorMessage.classList.remove("hidden")
+        setTimeout(() => {errorMessage.classList.add("hidden")}, 3000)
+      });
+
     });
   })
 });
-
-
 
 //------------------------------------------------------------------------------
 // Don't change the code below: this function mocks the server response
